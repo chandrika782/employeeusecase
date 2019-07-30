@@ -23,7 +23,6 @@ public class EmployeeController {
 	EmployeeInterf employeeInterf;
 
 	@PostMapping("/employeeDetails")
-
 	public Employee createEmployee(@RequestBody Employee employee) {
 		return employeeInterf.save(employee);
 	}

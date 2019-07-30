@@ -22,7 +22,7 @@ public class EmployeeImpl implements EmployeeInterf {
 
 	@Override
 	public List<Employee> get() {
-		return  ndAll();
+		return employeeRepo.findAll(); 
 	}
 
 	@Override 
@@ -49,4 +49,4 @@ public class EmployeeImpl implements EmployeeInterf {
 		return "deleted successfully";
 	}
 
-}
+} 

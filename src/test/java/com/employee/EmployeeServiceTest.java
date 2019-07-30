@@ -13,80 +13,101 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.employee.Exception.EmployeeException;
 import com.employee.model.Employee;
 import com.employee.repository.EmployeeRepo;
 import com.employee.service.EmployeeImpl;
 
 @RunWith(SpringRunner.class)
 public class EmployeeServiceTest {
-	
+
 	@Mock
 	EmployeeRepo employeeRepo;
-	
-	
+
 	@InjectMocks
 	EmployeeImpl employeeImpl;
-	
-	
+
 	Employee employee;
-	
 
 	@Before
 	public void init() {
-		
-		Employee emp=new Employee();
-		
-		emp.setEmpId(1);
-		emp.setEmpName("chandu");
-		emp.setGender("female");
-		emp.setPhoneno(99009);
-		emp.setAddress("kadapa");
+
+		employee = new Employee(); 
+
+		employee.setEmpId(1);
+		employee.setEmpName("chandu");
+		employee.setGender("female");
+		employee.setPhoneno(99009);
+		employee.setAddress("kadapa");
 	}
-	
+
 	@Test
-	
+
 	public void save() {
-		
+
 		Mockito.when(employeeRepo.save(employee)).thenReturn(employee);
 		Employee Actualvalue = employeeImpl.save(employee);
 		Assert.assertEquals(employee, Actualvalue);
-		
+
 	}
-	
-	
+
 	@Test
-	
 	public void get() {
-		
-		List<Employee> l=new ArrayList<Employee>();
+
+		List<Employee> l = new ArrayList<>();
 		l.add(employee);
 		Mockito.when(employeeRepo.findAll()).thenReturn(l);
-		List<Employee> Actualvalue=employeeImpl.get();
+		List<Employee> Actualvalue = employeeImpl.get();
 		Assert.assertEquals(l, Actualvalue);
 	}
 
-	
-	
 	@Test
-	
+
 	public void update() {
-		
-		
+
 		Mockito.when(employeeRepo.findById(employee.getEmpId())).thenReturn(Optional.of(employee));
-		String Actualvalue=employeeImpl.update(employee);
+		Mockito.when(employeeRepo.save(employee)).thenReturn(employee);
+		String Actualvalue = employeeImpl.update(employee);
 		Assert.assertEquals(Actualvalue, "updated successfully");
-		
+
 	}
-	
+
+	@Test(expected = EmployeeException.class)
+	public void updateNegative() {
+
+		Mockito.when(employeeRepo.findById(2)).thenReturn(Optional.of(employee));
+		Mockito.when(employeeRepo.save(employee)).thenReturn(employee);
+		String Actualvalue = employeeImpl.update(employee);
+//		Assert.assertEquals(Actualvalue, "updated successfully");
+
+	}
+
 	@Test
-	
+
 	public void getEmpId() {
+
+		Mockito.when(employeeRepo.findById(employee.getEmpId())).thenReturn(Optional.of(employee));
+		Employee Actualvalue = employeeImpl.getEmpId(employee.getEmpId());
+		Assert.assertEquals(Actualvalue, employee);
+
 	}
-	s
+
 	@Test
 	public void deleteEmpId() {
-	}
-	}
-	
 
+		Mockito.when(employeeRepo.findById(employee.getEmpId())).thenReturn(Optional.of(employee));
+		// Mockito.when(employeeRepo.deleteById(employee.getEmpId()));
+		String Actualvalue = employeeImpl.deleteEmpId(employee.getEmpId());
+		Assert.assertEquals(Actualvalue, "deleted successfully");
+	}
 
+	@Test(expected = EmployeeException.class)
+	public void deleteNegative() {
+		Mockito.when(employeeRepo.findById(2)).thenReturn(Optional.of(employee));
+		// Mockito.when(employeeRepo.deleteById(employee.getEmpId()));
+		String Actualvalue = employeeImpl.deleteEmpId(employee.getEmpId());
+//			Assert.assertEquals(Actualvalue, "deleted successfully");
+
+	}
+
+}
