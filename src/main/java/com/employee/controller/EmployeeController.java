@@ -3,6 +3,7 @@ package com.employee.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,30 +24,30 @@ public class EmployeeController {
 	EmployeeInterf employeeInterf;
 
 	@PostMapping("/employeeDetails")
-	public Employee createEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
 		return employeeInterf.save(employee);
 	}
 
 	@GetMapping("/getDetails")
-	public List<Employee> getEmployee() {
+	public ResponseEntity<List<Employee>> getEmployee() {
 		return employeeInterf.get();
 	}
 
 	@GetMapping("/getDetailsById/{empId}")
-	public Employee getEmployeeById(@PathVariable("empId") int empId) {
+	public ResponseEntity<Employee> getEmployeeById(@PathVariable("empId") int empId) {
 		return employeeInterf.getEmpId(empId);
 
 	}
 
 	@PutMapping("/updateEmpDetails")
 
-	public String updateEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<String> updateEmployee(@RequestBody Employee employee) {
 		return employeeInterf.update(employee);
 	}
 
 	@DeleteMapping("/deleteDetailsById/{empId}")
 
-	public String deleteEmployeeById(@PathVariable("empId") int empId) {
+	public ResponseEntity<String> deleteEmployeeById(@PathVariable("empId") int empId) {
 		return employeeInterf.deleteEmpId(empId);
 	}
 }

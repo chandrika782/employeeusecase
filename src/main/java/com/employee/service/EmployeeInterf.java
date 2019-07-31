@@ -2,18 +2,20 @@ package com.employee.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.employee.model.Employee;
 
 public interface EmployeeInterf {
 	
-	public Employee save(Employee employee);
+	public ResponseEntity<Employee> save(Employee employee);
 	
-	public List<Employee> get();
+	public ResponseEntity<List<Employee>> get();
 	
-	public Employee getEmpId(int id);
+	public ResponseEntity<Employee> getEmpId(int id);
 	
-	public String update(Employee employee);
+	public ResponseEntity<String> update(Employee employee);
 	
-	public String deleteEmpId(int id);
+	public ResponseEntity<String> deleteEmpId(int id);
 
 }

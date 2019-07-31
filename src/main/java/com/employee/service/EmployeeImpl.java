@@ -3,6 +3,8 @@ package com.employee.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.employee.Exception.EmployeeException;
@@ -15,38 +17,41 @@ public class EmployeeImpl implements EmployeeInterf {
 	EmployeeRepo employeeRepo;
 
 	@Override
-	public Employee save(Employee employee) {
+	public ResponseEntity<Employee> save(Employee employee) {
+		Employee em = employeeRepo.save(employee);
 
-		return employeeRepo.save(employee);
+		return new ResponseEntity<>(em,HttpStatus.OK) ;
 	}
 
 	@Override
-	public List<Employee> get() {
-		return employeeRepo.findAll(); 
+	public ResponseEntity<List<Employee>> get() {
+		
+		return new ResponseEntity<List<Employee>>(employeeRepo.findAll(),HttpStatus.OK); 
 	}
 
 	@Override 
-	public String update(Employee employee) {
+	public ResponseEntity<String> update(Employee employee) {
 		if (!employeeRepo.findById(employee.getEmpId()).isPresent())
 			throw new EmployeeException("employee not exist");
 
 		employeeRepo.save(employee);
-		return "updated successfully";
+		return new ResponseEntity<String>("updated successfully",HttpStatus.OK);
+		//return  ResponseEntity.status(HttpStatus.OK).body("updated successfully");
 	}
 
 	@Override
-	public Employee getEmpId(int id) {
+	public ResponseEntity<Employee> getEmpId(int id) {
 
-		return employeeRepo.findById(id).get();
+		return new ResponseEntity<>(employeeRepo.findById(id).get(),HttpStatus.OK);
 	}
 
 	@Override
-	public String deleteEmpId(int id) {
+	public ResponseEntity<String> deleteEmpId(int id) {
 		if (!employeeRepo.findById(id).isPresent())
 			throw new EmployeeException("employee not exist");
 
 		employeeRepo.deleteById(id);
-		return "deleted successfully";
+		return new ResponseEntity<String>("deleted successfully",HttpStatus.OK);
 	}
 
 } 
